@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
 
 	public Text scoreText;
 	public Text pointText;
-	private float timeElapsed = 0f;
+	public static float timeElapsed = 0f;
 	private float bestTime = 0f;
 	private bool bestBestTime;
 
@@ -21,12 +21,14 @@ public class GameManager : MonoBehaviour {
 	private float bestPoints;
 
 
-	public bool gameStarted;
+	public static bool gameStarted;
 	private GameObject player;
 	private TimeManager timeManager;
 	private GameObject floor;
 	private Spawner spawner;
 	private Spawner spawner2;
+
+
 	void Awake(){
 		resetBestScoreButton = GameObject.Find ("ResetBestScoreButton");
 		floor = GameObject.Find ("Foreground");

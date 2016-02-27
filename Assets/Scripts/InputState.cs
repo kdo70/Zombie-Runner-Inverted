@@ -19,7 +19,7 @@ public class InputState : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		actionButton = Input.GetKey(KeyCode.Space);
-		invertButton = Input.GetKey(KeyCode.E);
+		invertButton = Input.GetKey(KeyCode.W);
 	}
 
 	void FixedUpdate(){
