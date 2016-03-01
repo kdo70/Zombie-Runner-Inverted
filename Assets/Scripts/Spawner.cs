@@ -7,23 +7,13 @@ public class Spawner : MonoBehaviour {
 	public float delay = 5.0f;
 	public bool active = true;
 	public Vector2 delayRange = new Vector2(.5f,5);
-	public float clock = 0;
 
 	// Use this for initialization
 	void Start () {
 		ResetDelay ();
 		StartCoroutine(EnemyGenerator());
 	}
-
-	void Update(){
-		clock += Time.deltaTime;
-		if(clock > 15 && delayRange.y > 2){
-			clock = 0;
-			delayRange.y -= 1;
-		}
-
-
-	}
+		
 
 	IEnumerator EnemyGenerator(){
 		yield return new WaitForSeconds (delay);
@@ -35,9 +25,17 @@ public class Spawner : MonoBehaviour {
 		StartCoroutine(EnemyGenerator());
 	}
 
+	IEnumerator ShortenDelayRange() {
+		yield return new WaitForSeconds (15f);
+		if(delayRange.y > 2) {
+			delayRange.y -= 1;
+			StartCoroutine (ShortenDelayRange ());
+		}
+	}
+
 	public void ResetSpawner(){
-		clock = 0;
 		delayRange.y = 5;
+		StartCoroutine (ShortenDelayRange ());
 	}
 
 	void ResetDelay(){

@@ -6,8 +6,7 @@ public class Invert : MonoBehaviour {
 	private Rigidbody2D body2d;
 	private InputState inputState;
 	public bool upsideDown = false;
-	private float delay = .5f;
-	private float clock = 0;
+	private bool delay = false;
 
 	void Awake(){
 		body2d = GetComponent<Rigidbody2D> ();
@@ -16,10 +15,9 @@ public class Invert : MonoBehaviour {
 
 
 	void Update () {
-		clock += Time.deltaTime;
 		if(inputState.standing){
 			if (inputState.invertButton) {
-				InvertPlayer ();
+				StartCoroutine (InvertPlayer ());
 			}
 		}
 		if(!upsideDown){
@@ -29,15 +27,18 @@ public class Invert : MonoBehaviour {
 		}
 	}
 
-	void InvertPlayer(){
-		if (clock > delay && !upsideDown) {
-			clock = 0;
+
+	IEnumerator InvertPlayer() {
+		if (!upsideDown && !delay) {
 			upsideDown = true;
+			delay = true;
 			body2d.gravityScale = -60;
-		} else if(clock > delay && upsideDown){
-			clock = 0;
+		} else if(upsideDown && !delay){
 			upsideDown = false;
+			delay = true;
 			body2d.gravityScale = 60;
 		}
+		yield return new WaitForSeconds (.5f);
+		delay = false;
 	}
 }

@@ -8,6 +8,7 @@ public class Jump : MonoBehaviour {
 	private Rigidbody2D body2d;
 	private InputState inputState;
 	private Invert invert;
+	private bool delay = false;
 
 	void Awake(){
 		body2d = GetComponent<Rigidbody2D> ();
@@ -20,12 +21,21 @@ public class Jump : MonoBehaviour {
 	void Update () {
 		if(inputState.standing){
 			if (inputState.actionButton) {
-				if (!invert.upsideDown) {
-					body2d.velocity = new Vector2 (transform.position.x < 0 ? forwardSpeed : 0, jumpSpeed);
-				} else {
-					body2d.velocity = new Vector2 (transform.position.x < 0 ? forwardSpeed : 0, -jumpSpeed);
-				}
+				StartCoroutine (Jumping ());
 			}
 		}
+	}
+
+	IEnumerator Jumping() {
+		if (!invert.upsideDown && !delay) {
+			body2d.velocity = new Vector2 (transform.position.x < 0 ? forwardSpeed : 0, jumpSpeed);
+			delay = true;
+		} else if(invert.upsideDown && !delay) {
+			body2d.velocity = new Vector2 (transform.position.x < 0 ? forwardSpeed : 0, -jumpSpeed);
+			delay = true;
+		}
+
+		yield return new WaitForSeconds (.5f);
+		delay = false;
 	}
 }
